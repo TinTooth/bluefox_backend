@@ -9,12 +9,8 @@ from .serializers import OrderSerializer
 
 
 @api_view(['POST', 'GET'])
-@permission_classes([IsAuthenticated])
-def get_create(request):
-    if request.method == 'GET' and request.user.is_staff == True:
-        result = Order.objects.all()
-        serializer = OrderSerializer(result, many = True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+@permission_classes([AllowAny])
+def create(request):
     if request.method == 'POST':
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
@@ -22,6 +18,15 @@ def get_create(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all(request):
+    if request.method == 'GET' and request.user.is_staff == True:
+        result = Order.objects.all()
+        serializer = OrderSerializer(result, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET','PUT','DELETE'])
 @permission_classes([IsAuthenticated])
