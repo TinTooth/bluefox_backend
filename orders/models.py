@@ -3,7 +3,9 @@ from authentication.models import User
 
 # Create your models here.
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length = 120)
+    customer_phone_number= models.CharField(max_length = 120)
+    customer_email = models.EmailField(max_length = 120)
     deliver_date = models.DateField()
     status = models.CharField(max_length=32)
     total_price = models.FloatField()
